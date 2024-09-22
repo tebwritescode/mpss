@@ -13,11 +13,12 @@ CURRENT_LINES=$(wc -l < "$LOG_FILE")
 
 # If there are more than MAX_LINES, truncate the file to keep only the last MAX_LINES lines
 if [ $CURRENT_LINES -gt $MAX_LINES ]; then
-    echo "$(date) INFO: MPSS: Trimming log file"
+    echo "$(date) INFO: MPSS: Trimming log file" >> /var/log/mpss.log 2>&1
     tail -n $MAX_LINES $LOG_FILE >> mpss-temp.log
     mv mpss-temp.log "$LOG_FILE"
 fi
 
+echo "$(date) INFO: MPSS: Attempting to mount all" >> /var/log/mpss.log 2>&1
 sudo mount -a >> /var/log/mpss.log 2>&1
 
 if [ -e "${FILE}" ]; then
